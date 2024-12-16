@@ -1,45 +1,30 @@
-# Covid-19 India Portal
+# Books Mangement System 
 
-Given two files `app.js` and a database file `covid19IndiaPortal.db` consisting of three tables `state`, `district` and `user`.
+Given two files `app.js` and a database file `BooksMangement.db` consisting of  one tables `books`.
 
-Write APIs to perform operations on the tables `state`, `district` only after authentication of the user.
+Write APIs to perform operations on the tables `books`.
 
 The columns of the tables are given below,
 
-**State Table**
 
-| Columns    | Type    |
-| ---------- | ------- |
-| state_id   | INTEGER |
-| state_name | TEXT    |
-| population | INTEGER |
-
-**District Table**
+**Books  Table**
 
 | Columns       | Type    |
 | ------------- | ------- |
-| district_id   | INTEGER |
-| district_name | TEXT    |
-| state_id      | INTEGER |
-| cases         | INTEGER |
-| cured         | INTEGER |
-| active        | INTEGER |
-| deaths        | INTEGER |
+| bookId        | TEXT    |
+| title         | TEXT    |
+| author        | TEXT    |
+| genre         | TEXT    |
+| pages         | INTEGER |
+| publishedDate | INTEGER |
+| createdAt     |TIMESTAMP|
 
 You can use your previous code if required.
 
-#### Sample Valid User Credentials
-
-```
-{
-  "username": "christopher_phillips",
-  "password": "christy@123"
-}
-```
 
 ### API 1
 
-#### Path: `/login/`
+#### Path: `/books/`
 
 #### Method: `POST`
 
@@ -47,8 +32,11 @@ You can use your previous code if required.
 
 ```
 {
-  "username": "christopher_phillips",
-  "password": "christy@123"
+  "title": "christopher_phillips",
+  "author": "christy@123",
+  "genre: "sad",
+   "pages":130,
+   "publishedDate":1990
 }
 ```
 
@@ -56,7 +44,7 @@ You can use your previous code if required.
 
   - **Description**:
 
-    If an unregistered user tries to login
+     If an Error submiting book to database
 
   - **Response**
     - **Status code**
@@ -65,226 +53,77 @@ You can use your previous code if required.
       ```
     - **Body**
       ```
-      Invalid user
+      Error in submiting Book
       ```
 
 - **Scenario 2**
 
   - **Description**:
 
-    If the user provides an incorrect password
-
-  - **Response**
-    - **Status code**
-      ```
-      400
-      ```
-    - **Body**
-      ```
-      Invalid password
-      ```
-
-- **Scenario 3**
-
-  - **Description**:
-
-    Successful login of the user
+    Successful Book to database 
 
   - **Response**
 
-    Return the JWT Token
+      Succesfully submit your Book to Database 
 
-    ```
-    {
-      "jwtToken": "ak2284ns8Di32......"
-    }
-    ```
 
-### Authentication with Token
-
-- **Scenario 1**
-
-  - **Description**:
-
-    If the token is not provided by the user or an invalid token
-
-  - **Response**
-    - **Status code**
-      ```
-      401
-      ```
-    - **Body**
-      ```
-      Invalid JWT Token
-      ```
-
-- **Scenario 2**
-  After successful verification of token proceed to next middleware or handler
 
 ### API 2
 
-#### Path: `/states/`
+#### Path: `/books/`
 
 #### Method: `GET`
 
 #### Description:
 
-Returns a list of all states in the state table
+Returns a books  based on the author name 
 
 #### Response
 
 ```
-[
-  {
-    "stateId": 1,
-    "stateName": "Andaman and Nicobar Islands",
-    "population": 380581
-  },
-
-  ...
-]
+{
+   "bookId":"28b85b58yt5b_58b5b_58u5t7"
+  "title": "Book Title",
+  "author": "Book Author",
+  "genre": "Book Genre",
+  "pages": 300,
+  "publishedDate": 2022
+}
 ```
+
+
 
 ### API 3
 
-#### Path: `/states/:stateId/`
-
-#### Method: `GET`
-
-#### Description:
-
-Returns a state based on the state ID
-
-#### Response
-
-```
-{
-  "stateId": 8,
-  "stateName": "Delhi",
-  "population": 16787941
-}
-```
-
-### API 4
-
-#### Path: `/districts/`
-
-#### Method: `POST`
-
-#### Description:
-
-Create a district in the district table, `district_id` is auto-incremented
-
-#### Request
-
-```
-{
-  "districtName": "Bagalkot",
-  "stateId": 3,
-  "cases": 2323,
-  "cured": 2000,
-  "active": 315,
-  "deaths": 8
-}
-```
-
-#### Response
-
-```
-District Successfully Added
-```
-
-### API 5
-
-#### Path: `/districts/:districtId/`
-
-#### Method: `GET`
-
-#### Description:
-
-Returns a district based on the district ID
-
-#### Response
-
-```
-{
-  "districtId": 322,
-  "districtName": "Palakkad",
-  "stateId": 17,
-  "cases": 61558,
-  "cured": 59276,
-  "active": 2095,
-  "deaths": 177
-}
-```
-
-### API 6
-
-#### Path: `/districts/:districtId/`
+#### Path: `/books/:booksId/`
 
 #### Method: `DELETE`
 
 #### Description:
 
-Deletes a district from the district table based on the district ID
+Deletes a Book from the Books  table based on the book ID
 
 #### Response
 
 ```
-District Removed
+Book deleted successfully
 
 ```
 
-### API 7
+### API 4 
 
-#### Path: `/districts/:districtId/`
+### Path : `/books/:booksId/`
 
-#### Method: `PUT`
+### Method :`PUT`
 
 #### Description:
 
-Updates the details of a specific district based on the district ID
-
-#### Request
-
-```
-{
-  "districtName": "Nadia",
-  "stateId": 3,
-  "cases": 9628,
-  "cured": 6524,
-  "active": 3000,
-  "deaths": 104
-}
-```
+Updates a Book from the Books  table based on the book ID
 
 #### Response
 
 ```
-
-District Details Updated
-
-```
-
-### API 8
-
-#### Path: `/states/:stateId/stats/`
-
-#### Method: `GET`
-
-#### Description:
-
-Returns the statistics of total cases, cured, active, deaths of a specific state based on state ID
-
-#### Response
-
-```
-{
-  "totalCases": 724355,
-  "totalCured": 615324,
-  "totalActive": 99254,
-  "totalDeaths": 9777
-}
+Book updated successfully
 
 ```
 
