@@ -84,6 +84,22 @@ app.get('/books', async (request, response) => {
   }
 })
 
+//GETTING BOOK BASED BOOKID 
+
+app.get(
+  '/books/:bookId',
+  async (request, response) => {
+    const {bookId} = request.params
+    try {
+      const getBooks = `SELECT * FROM Books  WHERE bookId = ${bookId}`
+      const dbResponse = await database.all(getAllAssignment)
+      response.send(dbResponse)
+    } catch (error) {
+      response.send(error)
+    }
+  },
+)
+
 // DELETING BOOK BASED ON BOOKID
 
 app.delete('/books/:bookId', async (request, response) => {
